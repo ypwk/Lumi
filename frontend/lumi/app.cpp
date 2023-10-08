@@ -53,6 +53,8 @@ static void StreamData(char* query) {
         res = curl_easy_perform(curl);
         curl_easy_cleanup(curl);
     }
+
+    chatMessages[chatMessages.size() - 1] = chatMessages[chatMessages.size() - 1].substr(0, chatMessages[chatMessages.size() - 1].length() - 4);
 }
 
 void ThreadFunction(char* query) {
