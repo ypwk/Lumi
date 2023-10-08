@@ -1,2 +1,4 @@
 notes
 .venv
+frontend/out/
+frontend/.vs/
