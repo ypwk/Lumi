@@ -4,5 +4,5 @@ notes
 .vs
 
 imgui-frontend/out/
-imgui-frontend\.vs\
-backend\__pycache__\
+imgui-frontend/out/
+backend/__pycache__/

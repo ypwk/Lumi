@@ -1,0 +1,8 @@
+notes
+
+.venv
+.vs
+
+imgui-frontend/out/
+imgui-frontend\.vs\
+backend\__pycache__\
