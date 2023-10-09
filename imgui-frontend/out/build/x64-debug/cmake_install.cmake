@@ -35,7 +35,7 @@ endif()
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
   include("C:/Users/kevin/Programming/Lumi/imgui-frontend/out/build/x64-debug/lumi/cmake_install.cmake")
-  include("C:/Users/kevin/Programming/Lumi/imgui-frontend/out/build/x64-debug/external/glew/cmake_install.cmake")
+  include("C:/Users/kevin/Programming/Lumi/imgui-frontend/out/build/x64-debug/external/glew-cmake/cmake_install.cmake")
   include("C:/Users/kevin/Programming/Lumi/imgui-frontend/out/build/x64-debug/external/glfw/cmake_install.cmake")
   include("C:/Users/kevin/Programming/Lumi/imgui-frontend/out/build/x64-debug/external/curl/cmake_install.cmake")
 

@@ -23,8 +23,11 @@ BUILD_SHARED_LIBS:BOOL=OFF
 //Build curl executable with static libcurl
 BUILD_STATIC_CURL:BOOL=OFF
 
-//Build shared libraries
+//Build static libraries
 BUILD_STATIC_LIBS:BOOL=OFF
+
+//Build tests
+BUILD_TESTING:BOOL=ON
 
 //Path to a program.
 CMAKE_AR:FILEPATH=C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.37.32822/bin/Hostx64/x64/lib.exe
@@ -32,8 +35,8 @@ CMAKE_AR:FILEPATH=C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Too
 //No help, variable specified on the command line.
 CMAKE_BUILD_TYPE:STRING=Debug
 
-//CXX compiler
-CMAKE_CXX_COMPILER:STRING=C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.37.32822/bin/Hostx64/x64/cl.exe
+//No help, variable specified on the command line.
+CMAKE_CXX_COMPILER:STRING=cl.exe
 
 //Flags used by the CXX compiler during all build types.
 CMAKE_CXX_FLAGS:STRING=/DWIN32 /D_WINDOWS /W3 /GR /EHsc
@@ -53,8 +56,8 @@ CMAKE_CXX_FLAGS_RELWITHDEBINFO:STRING=/MD /O2 /Ob1 /DNDEBUG
 //Libraries linked by default with all C++ applications.
 CMAKE_CXX_STANDARD_LIBRARIES:STRING=kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib
 
-//C compiler
-CMAKE_C_COMPILER:STRING=C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.37.32822/bin/Hostx64/x64/cl.exe
+//No help, variable specified on the command line.
+CMAKE_C_COMPILER:STRING=cl.exe
 
 //Flags used by the C compiler during all build types.
 CMAKE_C_FLAGS:STRING=/DWIN32 /D_WINDOWS /W3
@@ -396,6 +399,9 @@ CURL_DISABLE_SMTP:BOOL=OFF
 //disables use of socketpair for curl_multi_poll
 CURL_DISABLE_SOCKETPAIR:BOOL=OFF
 
+//disables TLS-SRP support
+CURL_DISABLE_SRP:BOOL=OFF
+
 //disables Telnet
 CURL_DISABLE_TELNET:BOOL=OFF
 
@@ -442,7 +448,7 @@ CURL_TARGET_WINDOWS_VERSION:STRING=
 //Enable BearSSL for SSL/TLS
 CURL_USE_BEARSSL:BOOL=OFF
 
-//Enable GNUTLS for SSL/TLS
+//Enable GnuTLS for SSL/TLS
 CURL_USE_GNUTLS:BOOL=OFF
 
 //Use GSSAPI implementation (right now only Heimdal is supported
@@ -524,11 +530,18 @@ GLFW_BUILD_EXAMPLES:BOOL=OFF
 //Build the GLFW test programs
 GLFW_BUILD_TESTS:BOOL=OFF
 
+//Build support for Win32
+GLFW_BUILD_WIN32:BOOL=ON
+
 //Generate installation target
 GLFW_INSTALL:BOOL=ON
 
 //Value Computed by CMake
 GLFW_IS_TOP_LEVEL:STATIC=OFF
+
+//Library type override for GLFW (SHARED, STATIC, OBJECT, or empty
+// to follow BUILD_SHARED_LIBS)
+GLFW_LIBRARY_TYPE:STRING=
 
 //Value Computed by CMake
 GLFW_SOURCE_DIR:STATIC=C:/Users/kevin/Programming/Lumi/imgui-frontend/external/glfw
@@ -640,13 +653,13 @@ glew-cmake_BUILD_SHARED:BOOL=ON
 glew-cmake_BUILD_STATIC:BOOL=ON
 
 //Value Computed by CMake
-glew_BINARY_DIR:STATIC=C:/Users/kevin/Programming/Lumi/imgui-frontend/out/build/x64-debug/external/glew
+glew_BINARY_DIR:STATIC=C:/Users/kevin/Programming/Lumi/imgui-frontend/out/build/x64-debug/external/glew-cmake
 
 //Value Computed by CMake
 glew_IS_TOP_LEVEL:STATIC=OFF
 
 //Value Computed by CMake
-glew_SOURCE_DIR:STATIC=C:/Users/kevin/Programming/Lumi/imgui-frontend/external/glew
+glew_SOURCE_DIR:STATIC=C:/Users/kevin/Programming/Lumi/imgui-frontend/external/glew-cmake
 
 
 ########################
@@ -777,7 +790,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_MT
 CMAKE_MT-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=8
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=13
 //Platform information initialized
 CMAKE_PLATFORM_INFO_INITIALIZED:INTERNAL=1
 //noop for ranlib
@@ -895,6 +908,8 @@ CURL_DISABLE_SMB-ADVANCED:INTERNAL=1
 CURL_DISABLE_SMTP-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CURL_DISABLE_SOCKETPAIR
 CURL_DISABLE_SOCKETPAIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: CURL_DISABLE_SRP
+CURL_DISABLE_SRP-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CURL_DISABLE_TELNET
 CURL_DISABLE_TELNET-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CURL_DISABLE_TFTP
@@ -939,6 +954,10 @@ FIND_PACKAGE_MESSAGE_DETAILS_Perl:INTERNAL=[C:/cygwin64/bin/perl.exe][v5.32.1()]
 FIND_PACKAGE_MESSAGE_DETAILS_Threads:INTERNAL=[TRUE][v()]
 //Details about finding ZLIB
 FIND_PACKAGE_MESSAGE_DETAILS_ZLIB:INTERNAL=[C:/Users/kevin/anaconda3/Library/lib/z.lib][C:/Users/kevin/anaconda3/Library/include][c ][v1.2.11()]
+//GLFW pkg-config Libs.private
+GLFW_PKG_CONFIG_LIBS_PRIVATE:INTERNAL= -lgdi32
+//GLFW pkg-config Requires.private
+GLFW_PKG_CONFIG_REQUIRES_PRIVATE:INTERNAL=
 //Have symbol alarm
 HAVE_ALARM:INTERNAL=
 //Curl test 
@@ -953,6 +972,8 @@ HAVE_BUILTIN_AVAILABLE:INTERNAL=
 HAVE_CLOCK_GETTIME_MONOTONIC:INTERNAL=
 //Have symbol fchmod
 HAVE_FCHMOD:INTERNAL=
+//Have symbol fcntl
+HAVE_FCNTL:INTERNAL=
 //Curl test 
 HAVE_FCNTL_O_NONBLOCK:INTERNAL=
 //Curl test 
@@ -1049,6 +1070,8 @@ HAVE_SIZEOF_SIZE_T:INTERNAL=TRUE
 HAVE_SIZEOF_SSIZE_T:INTERNAL=FALSE
 //Result of TRY_COMPILE
 HAVE_SIZEOF_STRUCT_SOCKADDR_STORAGE:INTERNAL=TRUE
+//Result of TRY_COMPILE
+HAVE_SIZEOF_SUSECONDS_T:INTERNAL=FALSE
 //Result of TRY_COMPILE
 HAVE_SIZEOF_TIME_T:INTERNAL=TRUE
 //Result of TRY_COMPILE
@@ -1154,6 +1177,8 @@ SIZEOF_SIZE_T:INTERNAL=8
 SIZEOF_SSIZE_T:INTERNAL=
 //CHECK_TYPE_SIZE: sizeof(struct sockaddr_storage)
 SIZEOF_STRUCT_SOCKADDR_STORAGE:INTERNAL=128
+//CHECK_TYPE_SIZE: suseconds_t unknown
+SIZEOF_SUSECONDS_T:INTERNAL=
 //CHECK_TYPE_SIZE: sizeof(time_t)
 SIZEOF_TIME_T:INTERNAL=8
 //CHECK_TYPE_SIZE: sizeof(__int64)

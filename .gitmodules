@@ -1,0 +1,12 @@
+[submodule "imgui-frontend/external/glfw"]
+	path = imgui-frontend/external/glfw
+	url = git@github.com:glfw/glfw.git
+	branch = master
+[submodule "imgui-frontend/external/curl"]
+	path = imgui-frontend/external/curl
+	url = git@github.com:curl/curl.git
+	branch = master
+[submodule "imgui-frontend/external/glew-cmake"]
+	path = imgui-frontend/external/glew-cmake
+	url = git@github.com:Perlmint/glew-cmake.git
+	branch = master

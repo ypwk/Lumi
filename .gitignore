@@ -3,6 +3,6 @@ notes
 .venv
 .vs
 
-frontend/out/
-frontend/.vs/
-backend/__pycache__/
+imgui-frontend/out/
+imgui-frontend\.vs\
+backend\__pycache__\

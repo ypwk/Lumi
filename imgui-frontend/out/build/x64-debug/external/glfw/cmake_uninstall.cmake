@@ -1,6 +1,6 @@
 
 if (NOT EXISTS "C:/Users/kevin/Programming/Lumi/imgui-frontend/out/build/x64-debug/external/glfw/install_manifest.txt")
-  message(FATAL_ERROR "Cannot find install manifest: \"C:/Users/kevin/Programming/Lumi/imgui-frontend/out/build/x64-debug/external/glfw/install_manifest.txt\"")
+    message(FATAL_ERROR "Cannot find install manifest: \"C:/Users/kevin/Programming/Lumi/imgui-frontend/out/build/x64-debug/external/glfw/install_manifest.txt\"")
 endif()
 
 file(READ "C:/Users/kevin/Programming/Lumi/imgui-frontend/out/build/x64-debug/external/glfw/install_manifest.txt" files)
