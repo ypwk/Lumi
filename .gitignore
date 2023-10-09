@@ -1,7 +1,8 @@
 notes
+
 .venv
+.vs
 
 frontend/out/
 frontend/.vs/
-
 backend/__pycache__/
