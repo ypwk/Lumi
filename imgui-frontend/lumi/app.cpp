@@ -15,6 +15,34 @@
 #include <curl\curl.h>
 #include <thread>
 
+#include "whisper.h"
+
+// command-line parameters
+struct whisper_params {
+    int32_t n_threads = (int32_t)std::thread::hardware_concurrency();
+    int32_t voice_ms = 10000;
+    int32_t capture_id = -1;
+    int32_t max_tokens = 32;
+    int32_t audio_ctx = 0;
+
+    float vad_thold = 0.6f;
+    float freq_thold = 100.0f;
+
+    bool speed_up = false;
+    bool translate = false;
+    bool print_special = false;
+    bool print_energy = false;
+    bool no_timestamps = true;
+
+    std::string person = "Santa";
+    std::string language = "en";
+    std::string model_wsp = "models/ggml-base.en.bin";
+    std::string model_gpt = "models/ggml-gpt-2-117M.bin";
+    std::string speak = "./examples/talk/speak";
+    std::string fname_out;
+};
+
+
 static void glfw_error_callback(int error, const char* description)
 {
     fprintf(stderr, "GLFW Error %d: %s\n", error, description);
@@ -68,6 +96,8 @@ int main(void)
     // debug output exe path
     //std::cout << "Current path is " << std::filesystem::current_path() << '\n';
 
+    whisper_params params;
+
     glfwSetErrorCallback(glfw_error_callback);
 
     GLFWwindow* window;
@@ -81,7 +111,7 @@ int main(void)
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     /* Create a windowed mode window and its OpenGL context */
-    window = glfwCreateWindow(1280, 720, "DecoderVIS", NULL, NULL);
+    window = glfwCreateWindow(1280, 720, "Lumi", NULL, NULL);
     if (!window)
     {
         glfwTerminate();

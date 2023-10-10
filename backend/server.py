@@ -39,7 +39,8 @@ class CustomLLM(LLM):
 
 tokenizer.pad_token_id = model.config.eos_token_id
 
-template = """Question: {question}
+template = """You are a virtual assistant named Lumi. 
+Question: {question}
 Answer: Let's think step by step."""
 prompt = PromptTemplate.from_template(template)
 llm = CustomLLM()

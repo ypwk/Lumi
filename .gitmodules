@@ -10,3 +10,7 @@
 	path = imgui-frontend/external/glew-cmake
 	url = git@github.com:Perlmint/glew-cmake.git
 	branch = master
+[submodule "imgui-frontend/external/whisper.cpp"]
+	path = imgui-frontend/external/whisper.cpp
+	url = git@github.com:ggerganov/whisper.cpp.git
+	branch = master
