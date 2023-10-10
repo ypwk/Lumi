@@ -5,4 +5,15 @@ notes
 
 imgui-frontend/out/
 imgui-frontend/out/
+
 backend/__pycache__/
+
+frontend/Lumi/__tests__/
+frontend/Lumi/.bundle/
+frontend/Lumi/android/*
+frontend/Lumi/ios/*
+frontend/Lumi/windows/*
+frontend/Lumi/macos/*
+frontend/Lumi/node_modules/
+frontend/Lumi/npm-debug.log/
+frontend/Lumi/yarn-error.log/
