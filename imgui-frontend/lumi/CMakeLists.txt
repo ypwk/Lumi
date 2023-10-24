@@ -9,8 +9,8 @@ file(GLOB_RECURSE SRC_FILES CONFIGURE_DEPENDS
 
 # Add source to this project's executable.
 add_executable(Lumi_FE
-	"app.cpp" ${SRC_FILES} 
-  )
+	"app.cpp" ${SRC_FILES}
+)
 
 target_link_libraries(Lumi_FE PUBLIC
 	glfw

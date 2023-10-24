@@ -15,33 +15,6 @@
 #include <curl\curl.h>
 #include <thread>
 
-#include "whisper.h"
-
-// command-line parameters
-struct whisper_params {
-    int32_t n_threads = (int32_t)std::thread::hardware_concurrency();
-    int32_t voice_ms = 10000;
-    int32_t capture_id = -1;
-    int32_t max_tokens = 32;
-    int32_t audio_ctx = 0;
-
-    float vad_thold = 0.6f;
-    float freq_thold = 100.0f;
-
-    bool speed_up = false;
-    bool translate = false;
-    bool print_special = false;
-    bool print_energy = false;
-    bool no_timestamps = true;
-
-    std::string person = "Santa";
-    std::string language = "en";
-    std::string model_wsp = "models/ggml-base.en.bin";
-    std::string model_gpt = "models/ggml-gpt-2-117M.bin";
-    std::string speak = "./examples/talk/speak";
-    std::string fname_out;
-};
-
 
 static void glfw_error_callback(int error, const char* description)
 {
@@ -89,6 +62,7 @@ void ThreadFunction(char* query) {
     StreamData(query);
     // Clear the input buffer for the next message
     std::memset(query, 0, sizeof(query));
+    chatMessages.push_back("");
 }
 
 int main(void)
@@ -136,7 +110,6 @@ int main(void)
         /* Loop until the user closes the window */
         while (!glfwWindowShouldClose(window))
         {
-
             // clear
             IG_Handler.NewFrame();
 
@@ -144,17 +117,20 @@ int main(void)
             CNH.Render();
 
             // render controller window
-            ImGui::Begin("Controller");
+            ImGui::Begin("Debug");
             {
+                ImGui::SetWindowFontScale(1.3);
+
                 ImGuiIO& io = ImGui::GetIO(); (void)io;
 
-                ImGui::Text("DisplaySize = %f,%f", io.DisplaySize.x, io.DisplaySize.y);
-                ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
+                ImGui::TextWrapped("DisplaySize = %f,%f", io.DisplaySize.x, io.DisplaySize.y);
+                ImGui::TextWrapped("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
             }
             ImGui::End();
 
             ImGui::Begin("Chat");
             {
+                ImGui::SetWindowFontScale(1.3);
 
                 // Display chat history (assuming some messages are stored in a vector or similar)
                 for (const auto& message : chatMessages)

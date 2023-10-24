@@ -14,3 +14,6 @@
 	path = imgui-frontend/external/whisper.cpp
 	url = git@github.com:ggerganov/whisper.cpp.git
 	branch = master
+[submodule "imgui-frontend/external/--force"]
+	path = imgui-frontend/external/--force
+	url = git@github.com:libsdl-org/SDL.git

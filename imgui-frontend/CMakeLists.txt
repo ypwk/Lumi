@@ -32,7 +32,6 @@ target_include_directories(Lumi_FE PUBLIC
     ${PROJECT_SOURCE_DIR}/external/glew-cmake/include
     ${PROJECT_SOURCE_DIR}/external/glfw/include
     ${PROJECT_SOURCE_DIR}/external/curl/include
-    ${PROJECT_SOURCE_DIR}/external/whisper.cpp/
 )
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
