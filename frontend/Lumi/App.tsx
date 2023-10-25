@@ -15,15 +15,24 @@ import {
   Text,
   useColorScheme,
   View,
+  TextInput,
 } from 'react-native';
 
 import {
   Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
+  // DebugInstructions,
+  // Header,
+  // LearnMoreLinks,
+  // ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+
+import {
+  VoiceButton,
+  ChatInput,
+  voiceAssistantStyles,
+  commonStyles,
+  // ... other imports ...
+} from './src';
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -62,57 +71,55 @@ function App(): JSX.Element {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
+  function beginMomentumScroll() {}
+  function endMomentumScroll() {}
+
   return (
-    <SafeAreaView style={backgroundStyle}>
+    <SafeAreaView style={voiceAssistantStyles.container}>
       <StatusBar
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         backgroundColor={backgroundStyle.backgroundColor}
       />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
+      <View style={voiceAssistantStyles.container}>
+        {/* Header */}
+        <View style={voiceAssistantStyles.header}>
+          <Text style={commonStyles.text}>Lumi</Text>
+          {/* Add icons on the right if necessary */}
         </View>
-      </ScrollView>
+
+        <ScrollView
+          contentInsetAdjustmentBehavior="automatic"
+          style={voiceAssistantStyles.chatContent}
+          disableIntervalMomentum={true}
+          onMomentumScrollBegin={beginMomentumScroll}
+          onMomentumScrollEnd={endMomentumScroll}>
+          {/* Chat bubbles */}
+          <View
+            style={[
+              voiceAssistantStyles.chatBubble,
+              voiceAssistantStyles.receiverBubble,
+            ]}>
+            <Text style={commonStyles.text}>YES</Text>
+          </View>
+
+          <View
+            style={[
+              voiceAssistantStyles.chatBubble,
+              voiceAssistantStyles.senderBubble,
+            ]}>
+            <Text style={commonStyles.text}>super down</Text>
+          </View>
+        </ScrollView>
+
+        {/* Footer */}
+        <View style={voiceAssistantStyles.footer}>
+          <ChatInput />
+          {/* Add icons and send button */}
+          <VoiceButton />
+        </View>
+      </View>
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
 
 export default App;
