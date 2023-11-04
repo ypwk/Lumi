@@ -17,3 +17,5 @@ frontend/Lumi/macos/*
 frontend/Lumi/node_modules/
 frontend/Lumi/npm-debug.log/
 frontend/Lumi/yarn-error.log/
+
+testing/

@@ -6,6 +6,7 @@ export {VoiceButton} from './components/VoiceButton';
 export {default as ResponseDisplay} from './components/ResponseDisplay';
 export {default as MicrophoneIndicator} from './components/MicrophoneIndicator';
 export {ChatInput} from './components/ChatInput';
+export {ChatInterface} from './components/ChatInterface';
 
 // Features
 export {default as VoiceAssistantScreen} from './features/assistant/VoiceAssistantScreen';

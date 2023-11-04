@@ -1,5 +1,6 @@
 {
     "java.project.sourcePaths": [
         "windows/Lumi/Assets/Fonts"
-    ]
+    ],
+    "java.compile.nullAnalysis.mode": "automatic"
 }

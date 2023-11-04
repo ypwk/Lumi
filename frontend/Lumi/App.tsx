@@ -9,7 +9,6 @@ import React from 'react';
 import type {PropsWithChildren} from 'react';
 import {
   SafeAreaView,
-  ScrollView,
   StatusBar,
   StyleSheet,
   Text,
@@ -28,9 +27,9 @@ import {
 
 import {
   VoiceButton,
-  ChatInput,
   voiceAssistantStyles,
   commonStyles,
+  ChatInterface,
   // ... other imports ...
 } from './src';
 
@@ -71,53 +70,13 @@ function App(): JSX.Element {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
-  function beginMomentumScroll() {}
-  function endMomentumScroll() {}
-
   return (
     <SafeAreaView style={voiceAssistantStyles.container}>
       <StatusBar
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         backgroundColor={backgroundStyle.backgroundColor}
       />
-      <View style={voiceAssistantStyles.container}>
-        {/* Header */}
-        <View style={voiceAssistantStyles.header}>
-          <Text style={commonStyles.text}>Lumi</Text>
-          {/* Add icons on the right if necessary */}
-        </View>
-
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={voiceAssistantStyles.chatContent}
-          disableIntervalMomentum={true}
-          onMomentumScrollBegin={beginMomentumScroll}
-          onMomentumScrollEnd={endMomentumScroll}>
-          {/* Chat bubbles */}
-          <View
-            style={[
-              voiceAssistantStyles.chatBubble,
-              voiceAssistantStyles.receiverBubble,
-            ]}>
-            <Text style={commonStyles.text}>YES</Text>
-          </View>
-
-          <View
-            style={[
-              voiceAssistantStyles.chatBubble,
-              voiceAssistantStyles.senderBubble,
-            ]}>
-            <Text style={commonStyles.text}>super down</Text>
-          </View>
-        </ScrollView>
-
-        {/* Footer */}
-        <View style={voiceAssistantStyles.footer}>
-          <ChatInput />
-          {/* Add icons and send button */}
-          <VoiceButton />
-        </View>
-      </View>
+      <ChatInterface />
     </SafeAreaView>
   );
 }
