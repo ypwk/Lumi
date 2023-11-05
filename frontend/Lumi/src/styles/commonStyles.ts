@@ -6,4 +6,10 @@ export default StyleSheet.create({
     fontSize: 16,
     fontFamily: 'Arial',
   },
+  inputButton: {
+    width: 30,
+    height: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
