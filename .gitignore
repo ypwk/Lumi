@@ -12,7 +12,12 @@ frontend/Lumi/__tests__/
 frontend/Lumi/.bundle/
 frontend/Lumi/android/*
 frontend/Lumi/ios/*
-frontend/Lumi/windows/*
+frontend/Lumi/windows/Lumi/BundleBuilder/
+frontend/Lumi/windows/Lumi/Generated Files/
+frontend/Lumi/windows/Lumi/*.cpp
+frontend/Lumi/windows/Lumi/*.h
+frontend/Lumi/windows/Lumi/x64/
+frontend/Lumi/windows/x64/
 frontend/Lumi/macos/*
 frontend/Lumi/node_modules/
 frontend/Lumi/npm-debug.log/
