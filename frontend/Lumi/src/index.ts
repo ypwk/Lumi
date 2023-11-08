@@ -1,5 +1,6 @@
 // API
 export * from './api/serverAPI';
+export {default as WebSocketClient} from './api/WebSocketClient';
 
 // Components
 export {default as ResponseDisplay} from './components/ResponseDisplay';

@@ -18,7 +18,7 @@ import {
 
 import {
   voiceAssistantStyles,
-  ChatInterface,
+  WebSocketClient,
   // ... other imports ...
 } from './src';
 
@@ -35,7 +35,7 @@ function App(): JSX.Element {
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         backgroundColor={backgroundStyle.backgroundColor}
       />
-      <ChatInterface />
+      <WebSocketClient />
     </SafeAreaView>
   );
 }

@@ -12,12 +12,10 @@ export default StyleSheet.create({
     fontFamily: 'Lato',
   },
   header: {
-    height: 60, // adjust as needed
-    backgroundColor: '#4a4e5a',
-    justifyContent: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    borderBottomColor: '#353a45',
-    borderBottomWidth: 1,
+    padding: 10,
   },
   chatContent: {
     flex: 1,
@@ -79,7 +77,10 @@ export default StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    height: 60,
+    height: 120,
     paddingHorizontal: 10,
+  },
+  voiceButton: {
+    borderRadius: 40,
   },
 });

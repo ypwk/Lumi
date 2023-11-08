@@ -7,41 +7,48 @@ import {ChatInput} from './ChatInput';
 import commonStyles from '../styles/commonStyles';
 import Icon from './Icon';
 
-// const BASE_URL = 'http://127.0.0.1:5000/query/';
-const BASE_URL = 'http://192.168.1.10:5000/query/';
-
 function beginMomentumScroll() {}
 function endMomentumScroll() {}
 
-export const ChatInterface = () => {
+export interface Message {
+  user: string;
+  text: string;
+}
+
+interface ChatInterfaceProps {
+  messages: Message[];
+  setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
+  sendMessage: (message: string) => void;
+}
+
+export const ChatInterface: React.FC<ChatInterfaceProps> = ({
+  messages,
+  setMessages,
+  sendMessage,
+}) => {
   const [inputText, setInputText] = useState(''); // Add a state to hold input text
   const [isListening, setIsListening] = useState(false);
   const [voiceText, setVoiceText] = useState('');
-  const [messages, setMessages] = useState<
-    {
-      user: string;
-      text: string;
-    }[]
-  >([]);
+  const [inputVisible, setInputVisible] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log('stop listening: ' + voiceText);
       if (Voice) {
         try {
           await Voice.stop();
+          console.log('stop listening: ' + voiceText);
           let chosenVoiceText = chooseVoiceText(voiceText);
-          if (chosenVoiceText.trimStart() != '') {
+          if (chosenVoiceText.trimStart() !== '') {
+            console.log('Sending: ' + chosenVoiceText);
+
             setMessages(prevMessages => [
               ...prevMessages,
               {user: 'You', text: chosenVoiceText},
               {user: 'Assistant', text: ''},
             ]);
 
-            console.log(voiceText);
-
-            const query = encodeURIComponent(voiceText);
-            streamData(query);
+            sendMessage(chosenVoiceText);
+            setVoiceText(''); // Clear the input after sending
           }
         } catch (error) {
           console.log(error);
@@ -49,7 +56,7 @@ export const ChatInterface = () => {
       }
     };
     fetchData().catch(console.error);
-  }, [voiceText]);
+  }, [voiceText, setMessages, sendMessage]);
 
   // Initialize voice recognition
   Voice.onSpeechStart = () => {
@@ -61,61 +68,6 @@ export const ChatInterface = () => {
   Voice.onSpeechResults = (e: SpeechResultsEvent) => {
     console.log(e);
     setVoiceText(e?.value?.[0] || '');
-  };
-
-  const streamData = async (query: string) => {
-    if (query === '') {
-      return;
-    }
-
-    const encodedQuery = encodeURIComponent(query);
-    const xhr = new XMLHttpRequest();
-    xhr.open('GET', BASE_URL + encodedQuery, true);
-
-    let lastResponseLength = 0; // To keep track of the last response length
-
-    xhr.onprogress = function () {
-      // New text is the difference between the current response and the previous response
-      const newText = xhr.responseText.substring(lastResponseLength);
-      lastResponseLength = xhr.responseText.length; // Update the last response length
-
-      console.log('Received chunk: ', newText);
-
-      // Append new data to the chat messages
-      setMessages(prevMessages => {
-        const updatedMessages = [...prevMessages];
-        const lastMessage = updatedMessages[updatedMessages.length - 1];
-        if (lastMessage && lastMessage.user === 'Assistant') {
-          // Append only if the last message is from Assistant
-          lastMessage.text += newText;
-        } else {
-          // Otherwise, add a new message
-          updatedMessages.push({
-            user: 'Assistant',
-            text: newText,
-          });
-        }
-        return updatedMessages;
-      });
-    };
-
-    xhr.onerror = function () {
-      console.error('Error during the stream.');
-    };
-
-    xhr.onload = function () {
-      console.log('Streaming finished.');
-      setMessages(prevMessages => {
-        const updatedMessages = [...prevMessages];
-        const lastMessage = updatedMessages[updatedMessages.length - 1];
-        lastMessage.text = lastMessage.text
-          .substring(0, lastMessage.text.length - 4)
-          .trimStart();
-        return updatedMessages;
-      });
-    };
-
-    xhr.send();
   };
 
   const startListening = async () => {
@@ -148,10 +100,12 @@ export const ChatInterface = () => {
     return text;
   };
 
-  const sendMessage = () => {
+  const handleSendMessage = () => {
     if (inputText.trim() === '') {
       return; // Don't send empty messages
     }
+
+    console.log('Sending: ' + inputText);
 
     setMessages(prevMessages => [
       ...prevMessages,
@@ -159,11 +113,7 @@ export const ChatInterface = () => {
       {user: 'Assistant', text: ''},
     ]);
 
-    console.log(inputText);
-
-    const query = encodeURIComponent(inputText);
-    streamData(query);
-
+    sendMessage(inputText);
     setInputText(''); // Clear the input after sending
   };
 
@@ -171,8 +121,17 @@ export const ChatInterface = () => {
     <View style={voiceAssistantStyles.container}>
       {/* Header */}
       <View style={voiceAssistantStyles.header}>
-        <Text style={commonStyles.text}>Lumi</Text>
-        {/* Add icons on the right if necessary */}
+        <TouchableOpacity
+          style={voiceAssistantStyles.chatButton}
+          onPress={beginMomentumScroll}>
+          <Icon type="archive" fill="#FFF" />
+        </TouchableOpacity>
+        {/* <Text style={commonStyles.text}>Chat</Text> */}
+        <TouchableOpacity
+          style={voiceAssistantStyles.chatButton}
+          onPress={beginMomentumScroll}>
+          <Icon type="settings" fill="#FFF" />
+        </TouchableOpacity>
       </View>
 
       <ScrollView
@@ -200,23 +159,33 @@ export const ChatInterface = () => {
 
       {/* Footer */}
       <View style={voiceAssistantStyles.footer}>
-        <ChatInput
-          value={inputText}
-          onChangeText={setInputText}
-          onSend={sendMessage}
-        />
+        {inputVisible && (
+          <ChatInput
+            value={inputText}
+            onChangeText={setInputText}
+            onSend={handleSendMessage}
+          />
+        )}
         {/* Add icons and send button */}
         {isListening ? (
           <TouchableOpacity
             style={voiceAssistantStyles.chatButton}
             onPress={stopListening}>
-            <Icon type="microphone" fill="#0FF" />
+            <Icon
+              type="microphone"
+              fill="#0FF"
+              style={voiceAssistantStyles.voiceButton}
+            />
           </TouchableOpacity>
         ) : (
           <TouchableOpacity
             style={voiceAssistantStyles.chatButton}
             onPress={startListening}>
-            <Icon type="microphone" fill="#FFF" />
+            <Icon
+              type="microphone"
+              fill="#FFF"
+              style={voiceAssistantStyles.voiceButton}
+            />
           </TouchableOpacity>
         )}
       </View>

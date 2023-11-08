@@ -70,8 +70,6 @@ int main(void)
     // debug output exe path
     //std::cout << "Current path is " << std::filesystem::current_path() << '\n';
 
-    whisper_params params;
-
     glfwSetErrorCallback(glfw_error_callback);
 
     GLFWwindow* window;
