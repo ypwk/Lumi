@@ -4,7 +4,7 @@ export default StyleSheet.create({
   text: {
     color: '#FFFFFF',
     fontSize: 16,
-    fontFamily: 'Arial',
+    fontFamily: 'Lato',
   },
   inputButton: {
     width: 30,

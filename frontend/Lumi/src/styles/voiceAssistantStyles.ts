@@ -26,6 +26,7 @@ export default StyleSheet.create({
     padding: 10,
     borderRadius: 10,
     marginBottom: 10,
+    marginHorizontal: 10,
     fontSize: 16,
     color: '#ffffff',
     fontFamily: 'Lato',
@@ -124,6 +125,13 @@ export default StyleSheet.create({
     backgroundColor: '#353a45', // Adjust color as needed
   },
   keyboardIcon: {
+    width: 40, // Adjust width as needed
+    height: 40, // Adjust height as needed
+    padding: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  navIcon: {
     width: 40, // Adjust width as needed
     height: 40, // Adjust height as needed
     padding: 10,

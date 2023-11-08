@@ -6,36 +6,22 @@
  */
 
 import React from 'react';
-import {SafeAreaView, StatusBar, useColorScheme} from 'react-native';
-
-import {
-  Colors,
-  // DebugInstructions,
-  // Header,
-  // LearnMoreLinks,
-  // ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import {SafeAreaView} from 'react-native';
 
 import {
   voiceAssistantStyles,
-  WebSocketClient,
+  NavigationStack,
   // ... other imports ...
 } from './src';
 
+import {NavigationContainer} from '@react-navigation/native';
+
 function App(): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
   return (
     <SafeAreaView style={voiceAssistantStyles.container}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <WebSocketClient />
+      <NavigationContainer>
+        <NavigationStack />
+      </NavigationContainer>
     </SafeAreaView>
   );
 }

@@ -3,9 +3,12 @@ import {View, Text, ScrollView} from 'react-native';
 import Voice, {SpeechResultsEvent} from '@react-native-community/voice';
 import {TouchableOpacity, TouchableHighlight} from 'react-native';
 import voiceAssistantStyles from '../styles/voiceAssistantStyles';
+import commonStyles from '../styles/commonStyles';
 import {ChatInput} from './ChatInput';
 import {BigVoiceButton} from './BigVoiceButton';
 import Icon from './Icon';
+import {ParamListBase, useNavigation} from '@react-navigation/native';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 
 function beginMomentumScroll() {}
 function endMomentumScroll() {}
@@ -35,12 +38,14 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
     setInputVisible(!inputVisible);
   };
 
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
+
   useEffect(() => {
     const fetchData = async () => {
       if (Voice) {
         try {
           await Voice.stop();
-          console.log('stop listening: ' + voiceText);
+
           let chosenVoiceText = chooseVoiceText(voiceText);
           if (chosenVoiceText.trimStart() !== '') {
             console.log('Sending: ' + chosenVoiceText);
@@ -127,13 +132,13 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
       <View style={voiceAssistantStyles.header}>
         <TouchableOpacity
           style={voiceAssistantStyles.navButton}
-          onPress={beginMomentumScroll}>
+          onPress={() => navigation.navigate('Archive')}>
           <Icon type="archive" fill="#FFF" />
         </TouchableOpacity>
-        {/* <Text style={commonStyles.text}>Chat</Text> */}
+        <Text style={commonStyles.text}>Chat</Text>
         <TouchableOpacity
           style={voiceAssistantStyles.navButton}
-          onPress={beginMomentumScroll}>
+          onPress={() => navigation.navigate('Settings')}>
           <Icon type="settings" fill="#FFF" />
         </TouchableOpacity>
       </View>
