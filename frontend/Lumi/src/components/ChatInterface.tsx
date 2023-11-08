@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, ScrollView} from 'react-native';
 import Voice, {SpeechResultsEvent} from '@react-native-community/voice';
-import {TouchableOpacity} from 'react-native';
+import {TouchableOpacity, TouchableHighlight} from 'react-native';
 import voiceAssistantStyles from '../styles/voiceAssistantStyles';
 import {ChatInput} from './ChatInput';
-import commonStyles from '../styles/commonStyles';
+import {BigVoiceButton} from './BigVoiceButton';
 import Icon from './Icon';
 
 function beginMomentumScroll() {}
@@ -30,6 +30,10 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
   const [isListening, setIsListening] = useState(false);
   const [voiceText, setVoiceText] = useState('');
   const [inputVisible, setInputVisible] = useState(false);
+
+  const invertInput = () => {
+    setInputVisible(!inputVisible);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -122,13 +126,13 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
       {/* Header */}
       <View style={voiceAssistantStyles.header}>
         <TouchableOpacity
-          style={voiceAssistantStyles.chatButton}
+          style={voiceAssistantStyles.navButton}
           onPress={beginMomentumScroll}>
           <Icon type="archive" fill="#FFF" />
         </TouchableOpacity>
         {/* <Text style={commonStyles.text}>Chat</Text> */}
         <TouchableOpacity
-          style={voiceAssistantStyles.chatButton}
+          style={voiceAssistantStyles.navButton}
           onPress={beginMomentumScroll}>
           <Icon type="settings" fill="#FFF" />
         </TouchableOpacity>
@@ -159,36 +163,33 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
 
       {/* Footer */}
       <View style={voiceAssistantStyles.footer}>
-        {inputVisible && (
+        {inputVisible ? (
           <ChatInput
             value={inputText}
             onChangeText={setInputText}
             onSend={handleSendMessage}
+            invertInput={invertInput}
           />
-        )}
-        {/* Add icons and send button */}
-        {isListening ? (
-          <TouchableOpacity
-            style={voiceAssistantStyles.chatButton}
-            onPress={stopListening}>
-            <Icon
-              type="microphone"
-              fill="#0FF"
-              style={voiceAssistantStyles.voiceButton}
-            />
-          </TouchableOpacity>
         ) : (
-          <TouchableOpacity
-            style={voiceAssistantStyles.chatButton}
-            onPress={startListening}>
-            <Icon
-              type="microphone"
-              fill="#FFF"
-              style={voiceAssistantStyles.voiceButton}
-            />
-          </TouchableOpacity>
+          <View style={voiceAssistantStyles.voiceInputBar}>
+            <TouchableHighlight
+              onPress={invertInput}
+              style={voiceAssistantStyles.touchableInputChangeBar}>
+              <View>
+                <View style={voiceAssistantStyles.keyboardIcon}>
+                  <Icon type="keyboard" fill="#FFF" />
+                </View>
+              </View>
+            </TouchableHighlight>
+          </View>
         )}
       </View>
+      <BigVoiceButton
+        startListening={startListening}
+        stopListening={stopListening}
+        isListening={isListening}
+        inputVisible={inputVisible}
+      />
     </View>
   );
 };

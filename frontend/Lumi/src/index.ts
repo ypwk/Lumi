@@ -1,12 +1,16 @@
 // API
-export * from './api/serverAPI';
-export {default as WebSocketClient} from './api/WebSocketClient';
+export {default as SocketChatInterface} from './api/SocketChatInterface';
 
 // Components
 export {default as ResponseDisplay} from './components/ResponseDisplay';
 export {default as MicrophoneIndicator} from './components/MicrophoneIndicator';
 export {ChatInput} from './components/ChatInput';
 export {ChatInterface} from './components/ChatInterface';
+export {VoiceButton} from './components/VoiceButton';
+export {BigVoiceButton} from './components/BigVoiceButton';
+export {default as SettingsInterface} from './components/SettingsInterface';
+export {default as ArchiveInterface} from './components/ArchiveInterface';
+export {default as NavigationStack} from './components/NavigationStack';
 
 // Features
 export {default as VoiceAssistantScreen} from './features/assistant/VoiceAssistantScreen';

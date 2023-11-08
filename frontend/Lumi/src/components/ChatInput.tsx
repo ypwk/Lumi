@@ -7,15 +7,17 @@ interface ChatInputProps {
   value: string;
   onChangeText: (text: string) => void;
   onSend: () => void;
+  invertInput: () => void;
 }
 
 export const ChatInput: React.FC<ChatInputProps> = ({
   value,
   onChangeText,
   onSend,
+  invertInput,
 }) => {
   return (
-    <View style={voiceAssistantStyles.chatInput}>
+    <View style={voiceAssistantStyles.chatInputBar}>
       <TextInput
         placeholder="Message"
         value={value} // Bind the input value to the state from the parent component
@@ -28,6 +30,11 @@ export const ChatInput: React.FC<ChatInputProps> = ({
         style={voiceAssistantStyles.chatButton}
         onPress={onSend}>
         <Icon type="airplane" fill="#FFF" />
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={voiceAssistantStyles.chatButton}
+        onPress={invertInput}>
+        <Icon type="microphone" fill="#FFF" />
       </TouchableOpacity>
     </View>
   );

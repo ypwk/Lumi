@@ -20,7 +20,7 @@ export default StyleSheet.create({
   chatContent: {
     flex: 1,
     backgroundColor: '#282c35',
-    padding: 10,
+    padding: 0,
   },
   chatBubble: {
     padding: 10,
@@ -29,28 +29,40 @@ export default StyleSheet.create({
     fontSize: 16,
     color: '#ffffff',
     fontFamily: 'Lato',
+    margin: 0,
   },
-  chatInput: {
-    flex: 1,
+  chatInputBar: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    paddingTop: 15,
+    paddingHorizontal: 10,
+    paddingBottom: 10,
   },
   chatTextBox: {
-    flex: 1,
     height: 40, // Define a fixed height for the TextInput
-    lineHeight: 20, // Set the lineHeight to match the height of the TextInput
     borderRadius: 15,
     borderWidth: 1,
     borderColor: '#ddd',
     paddingHorizontal: 10,
+    paddingVertical: 10,
     marginRight: 10,
+    flexGrow: 5,
     fontSize: 16, // Adjust fontSize as needed
-    justifyContent: 'center', // Vertically center the content
     color: '#FFFFFF',
-    fontFamily: 'Arial',
+    fontFamily: 'Lato',
   },
   chatButton: {
+    width: 40, // Adjust width as needed
+    height: 40, // Adjust height as needed
+    padding: 10,
+    marginHorizontal: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 20, // To make it circular if that's the desired shape
+    backgroundColor: '#353a45', // Adjust color as needed
+  },
+  navButton: {
     width: 40, // Adjust width as needed
     height: 40, // Adjust height as needed
     padding: 10,
@@ -59,28 +71,63 @@ export default StyleSheet.create({
     borderRadius: 20, // To make it circular if that's the desired shape
     backgroundColor: '#353a45', // Adjust color as needed
   },
+  bigVoiceButton: {
+    position: 'absolute',
+    bottom: 50, // Half of the height to make it stick out
+    alignSelf: 'center', // This centers the button on the X-axis
+    zIndex: 2,
+    elevation: 2,
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#353a45', // Adjust color as needed
+  },
   senderBubble: {
     alignSelf: 'flex-end',
     backgroundColor: '#4a4e5a', // Lighter bubble for sender
-    color: '#ffffff',
-    fontSize: 16,
-    fontFamily: 'Lato',
   },
   receiverBubble: {
     alignSelf: 'flex-start',
     backgroundColor: '#353a45', // Darker bubble for receiver
-    color: '#ffffff',
-    fontSize: 16,
-    fontFamily: 'Lato',
   },
   footer: {
+    position: 'relative',
+    width: '100%',
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
-    height: 120,
-    paddingHorizontal: 10,
+    justifyContent: 'space-between',
+    backgroundColor: '#282c35',
+    borderTopWidth: 1,
+    borderTopColor: '#ffffff',
+    zIndex: 1,
+    overflow: 'visible',
+    elevation: 0,
+  },
+  voiceInputBar: {
+    flex: 1,
+    width: '100%',
+    height: 100,
+  },
+  touchableInputChangeBar: {
+    flex: 1,
+    width: '100%',
   },
   voiceButton: {
-    borderRadius: 40,
+    width: 40, // Adjust width as needed
+    height: 40, // Adjust height as needed
+    padding: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 20, // To make it circular if that's the desired shape
+    backgroundColor: '#353a45', // Adjust color as needed
+  },
+  keyboardIcon: {
+    width: 40, // Adjust width as needed
+    height: 40, // Adjust height as needed
+    padding: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
