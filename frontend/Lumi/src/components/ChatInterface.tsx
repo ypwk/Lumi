@@ -6,9 +6,11 @@ import voiceAssistantStyles from '../styles/voiceAssistantStyles';
 import {ChatInput} from './ChatInput';
 import commonStyles from '../styles/commonStyles';
 import Icon from './Icon';
+import EventSource from 'react-native-sse';
 
-// const BASE_URL = 'http://127.0.0.1:5000/query/';
-const BASE_URL = 'http://192.168.1.10:5000/query/';
+const BASE_URL = 'http://127.0.0.1:5000/query?question=';
+// const BASE_URL = 'http://10.0.2.2:5000/query?question=';
+// const BASE_URL = 'http://192.168.1.10:5000/query?question=';
 
 function beginMomentumScroll() {}
 function endMomentumScroll() {}
@@ -31,7 +33,7 @@ export const ChatInterface = () => {
         try {
           await Voice.stop();
           let chosenVoiceText = chooseVoiceText(voiceText);
-          if (chosenVoiceText.trimStart() != '') {
+          if (chosenVoiceText.trimStart() !== '') {
             setMessages(prevMessages => [
               ...prevMessages,
               {user: 'You', text: chosenVoiceText},
@@ -67,19 +69,30 @@ export const ChatInterface = () => {
     if (query === '') {
       return;
     }
-
     const encodedQuery = encodeURIComponent(query);
-    const xhr = new XMLHttpRequest();
-    xhr.open('GET', BASE_URL + encodedQuery, true);
 
-    let lastResponseLength = 0; // To keep track of the last response length
+    let es = new EventSource(BASE_URL + encodedQuery);
 
-    xhr.onprogress = function () {
-      // New text is the difference between the current response and the previous response
-      const newText = xhr.responseText.substring(lastResponseLength);
-      lastResponseLength = xhr.responseText.length; // Update the last response length
+    es.addEventListener('open', _ => {
+      console.log('Open SSE connection.');
+    });
 
-      console.log('Received chunk: ', newText);
+    es.addEventListener('message', event => {
+      let newText = event.data;
+
+      if (newText === null || newText === undefined || newText === '') {
+        // console.log('Null message received.');
+        return;
+      }
+
+      newText += ' ';
+
+      // console.log('Received a chunk: ', newText);
+
+      if (newText.includes('</s>')) {
+        newText = newText.replace('</s>', '');
+        es.close();
+      }
 
       // Append new data to the chat messages
       setMessages(prevMessages => {
@@ -97,25 +110,19 @@ export const ChatInterface = () => {
         }
         return updatedMessages;
       });
-    };
+    });
 
-    xhr.onerror = function () {
-      console.error('Error during the stream.');
-    };
+    es.addEventListener('error', event => {
+      if (event.type === 'error') {
+        console.error('Connection error:', event.message);
+      } else if (event.type === 'exception') {
+        console.error('Error:', event.message, event.error);
+      }
+    });
 
-    xhr.onload = function () {
-      console.log('Streaming finished.');
-      setMessages(prevMessages => {
-        const updatedMessages = [...prevMessages];
-        const lastMessage = updatedMessages[updatedMessages.length - 1];
-        lastMessage.text = lastMessage.text
-          .substring(0, lastMessage.text.length - 4)
-          .trimStart();
-        return updatedMessages;
-      });
-    };
-
-    xhr.send();
+    es.addEventListener('close', _ => {
+      console.log('Close SSE connection.');
+    });
   };
 
   const startListening = async () => {
