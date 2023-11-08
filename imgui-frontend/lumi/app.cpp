@@ -14,30 +14,6 @@
 
 #include <curl\curl.h>
 #include <thread>
-#include <algorithm> // std::find_if_not
-#include <cctype> // std::isspace
-#include <locale> // std::locale
-
-// Helper function to trim whitespace from the start (left trim)
-std::string ltrim(const std::string& s) {
-    auto start = std::find_if_not(s.begin(), s.end(), [](int c) {
-        return std::isspace(c);
-        });
-    return std::string(start, s.end());
-}
-
-// Helper function to trim whitespace from the end (right trim)
-std::string rtrim(const std::string& s) {
-    auto end = std::find_if_not(s.rbegin(), s.rend(), [](int c) {
-        return std::isspace(c);
-        });
-    return std::string(s.begin(), end.base());
-}
-
-// Helper function to trim whitespace from both ends (trim)
-std::string trim(const std::string& s) {
-    return rtrim(ltrim(s));
-}
 
 
 static void glfw_error_callback(int error, const char* description)
@@ -50,30 +26,12 @@ std::vector<std::string> chatMessages;
 
 // Callback function to handle received data
 size_t WriteCallback(void* contents, size_t size, size_t nmemb, void* userp) {
-    // Convert to a string for easier manipulation
-    std::string tempString((char*)contents, size * nmemb);
-
-    // Check if the 'data:' prefix is present
-    size_t startPos = tempString.find("data: ");
-    if (startPos != std::string::npos) {
-        // Offset the start position by the length of "data: " to remove it
-        startPos += 6; // "data: " is 6 characters long
-        tempString = tempString.substr(startPos);
-    }
-
-    // Trim the whitespace
-    tempString = trim(tempString);
-
-    if (tempString.size() == 0) {
-        return size * nmemb;
-    }
-
     // Process the data as it arrives
     if (!created) {
         chatMessages.push_back("");
         created = true;
     }
-    chatMessages.back().append(tempString + " ");
+    chatMessages[chatMessages.size() - 1].append((char*)contents, size * nmemb);
     return size * nmemb;
 }
 
@@ -83,7 +41,7 @@ static void StreamData(char* query) {
     CURL* curl;
     CURLcode res;
     std::string readBuffer;
-    std::string url = "http://127.0.0.1:5000/query?question=";
+    std::string url = "http://127.0.0.1:5000/query/";
     created = false;
 
     curl = curl_easy_init();
@@ -97,7 +55,7 @@ static void StreamData(char* query) {
         curl_easy_cleanup(curl);
     }
 
-    chatMessages[chatMessages.size() - 1] = chatMessages[chatMessages.size() - 1].substr(0, chatMessages[chatMessages.size() - 1].length() - 5);
+    chatMessages[chatMessages.size() - 1] = chatMessages[chatMessages.size() - 1].substr(0, chatMessages[chatMessages.size() - 1].length() - 4);
 }
 
 void ThreadFunction(char* query) {
@@ -111,6 +69,8 @@ int main(void)
 {
     // debug output exe path
     //std::cout << "Current path is " << std::filesystem::current_path() << '\n';
+
+    whisper_params params;
 
     glfwSetErrorCallback(glfw_error_callback);
 
