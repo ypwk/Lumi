@@ -10,9 +10,6 @@ import Icon from './Icon';
 import {ParamListBase, useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 
-function beginMomentumScroll() {}
-function endMomentumScroll() {}
-
 export interface Message {
   user: string;
   text: string;
@@ -146,9 +143,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         style={voiceAssistantStyles.chatContent}
-        disableIntervalMomentum={true}
-        onMomentumScrollBegin={beginMomentumScroll}
-        onMomentumScrollEnd={endMomentumScroll}>
+        disableIntervalMomentum={true}>
         {/* Chat bubbles */}
         {messages.map((message, index) => (
           <View

@@ -117,7 +117,6 @@ int main(void)
             // render controller window
             ImGui::Begin("Debug");
             {
-                ImGui::SetWindowFontScale(1.3);
 
                 ImGuiIO& io = ImGui::GetIO(); (void)io;
 
@@ -128,7 +127,6 @@ int main(void)
 
             ImGui::Begin("Chat");
             {
-                ImGui::SetWindowFontScale(1.3);
 
                 // Display chat history (assuming some messages are stored in a vector or similar)
                 for (const auto& message : chatMessages)

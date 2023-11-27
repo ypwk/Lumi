@@ -19,3 +19,4 @@ export * from './features/assistant/useVoiceRecording';
 // Styles (assuming you're exporting styled components or CSS-in-JS objects)
 export {default as commonStyles} from './styles/commonStyles';
 export {default as voiceAssistantStyles} from './styles/voiceAssistantStyles';
+export {default as archiveStyles} from './styles/archiveStyles';

@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, TouchableOpacity, Text, ScrollView} from 'react-native-windows';
+import {Text, ScrollView, TouchableOpacity, View} from 'react-native';
 import {ParamListBase, useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 
@@ -7,9 +7,6 @@ import Icon from './Icon';
 
 import voiceAssistantStyles from '../styles/voiceAssistantStyles';
 import commonStyles from '../styles/commonStyles';
-
-function beginMomentumScroll() {}
-function endMomentumScroll() {}
 
 const SettingsInterface = () => {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
@@ -32,10 +29,8 @@ const SettingsInterface = () => {
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         style={voiceAssistantStyles.chatContent}
-        disableIntervalMomentum={true}
-        onMomentumScrollBegin={beginMomentumScroll}
-        onMomentumScrollEnd={endMomentumScroll}>
-        <Text>Yeet</Text>
+        disableIntervalMomentum={true}>
+        <Text>Settings Placeholder</Text>
       </ScrollView>
     </View>
   );
