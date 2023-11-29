@@ -1,9 +1,8 @@
 import React, {useState, useEffect} from 'react';
-import {Text, ScrollView, TouchableOpacity, View} from 'react-native';
+import {Text, ScrollView, TouchableOpacity, View, Alert} from 'react-native';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {ParamListBase, useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {v4 as uuidv4} from 'uuid'; // to generate random IDs
 
 import Icon from './Icon';
 
@@ -11,32 +10,48 @@ import voiceAssistantStyles from '../styles/voiceAssistantStyles';
 import commonStyles from '../styles/commonStyles';
 import ArchiveItem from './ArchiveItem';
 
+interface ArchiveEntry {
+  collection_id: string;
+  custom_id: string;
+  document: string;
+  embedding: string;
+  uuid: string;
+}
+
 const ArchiveInterface = () => {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
-  const [archiveEntries, setArchiveEntries] = useState<Item[]>([]);
-
-  const generateRandomDate = () => {
-    return new Date(
-      +new Date() - Math.floor(Math.random() * 10000000000),
-    ).toLocaleDateString('en-US');
-  };
+  const [archiveEntries, setArchiveEntries] = useState<ArchiveEntry[]>([]);
 
   useEffect(() => {
-    const generateRandomEntries = (count: number): Item[] => {
-      return Array.from({length: count}, (_, i) => ({
-        id: uuidv4(), // Ensure unique id for key prop
-        text: `Entry ${i + 1}`,
-        time: generateRandomDate(),
-      }));
-    };
-    setArchiveEntries(generateRandomEntries(50)); // Populate the state on component mount
+    // Fetch the archive entries from the server
+    fetch('http://127.0.0.1:5000/get_archive/')
+      .then(response => response.json())
+      .then(data => {
+        console.log(data);
+        setArchiveEntries(data);
+      })
+      .catch(error => {
+        console.error('Error fetching archive entries:', error);
+      });
   }, []);
 
   const handleDelete = (id: string) => {
-    setArchiveEntries(currentEntries =>
-      currentEntries.filter(entry => entry.id !== id),
-    );
+    fetch(`http://127.0.0.1:5000/delete_archive/${id}`, {
+      method: 'DELETE',
+    })
+      .then(response => {
+        if (response.ok) {
+          setArchiveEntries(currentEntries =>
+            currentEntries.filter(entry => entry.uuid !== id),
+          );
+        } else {
+          Alert.alert('Error', 'Unable to delete the entry');
+        }
+      })
+      .catch(error => {
+        console.error('Error deleting archive entry:', error);
+      });
   };
 
   return (
@@ -60,7 +75,7 @@ const ArchiveInterface = () => {
           style={voiceAssistantStyles.chatContent}
           disableIntervalMomentum={true}>
           {archiveEntries.map(item => (
-            <ArchiveItem key={item.id} item={item} onDelete={handleDelete} />
+            <ArchiveItem key={item.uuid} item={item} onDelete={handleDelete} />
           ))}
         </ScrollView>
       </View>
