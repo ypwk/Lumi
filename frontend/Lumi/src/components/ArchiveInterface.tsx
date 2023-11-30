@@ -18,6 +18,9 @@ interface ArchiveEntry {
   uuid: string;
 }
 
+// const server_address = 'http://10.0.2.2:5000';
+const server_address = 'http://127.0.0.1:5000';
+
 const ArchiveInterface = () => {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
@@ -25,7 +28,7 @@ const ArchiveInterface = () => {
 
   useEffect(() => {
     // Fetch the archive entries from the server
-    fetch('http://127.0.0.1:5000/get_archive/')
+    fetch(server_address + '/get_archive/')
       .then(response => response.json())
       .then(data => {
         console.log(data);
@@ -37,7 +40,7 @@ const ArchiveInterface = () => {
   }, []);
 
   const handleDelete = (id: string) => {
-    fetch(`http://127.0.0.1:5000/delete_archive/${id}`, {
+    fetch(`${server_address}/delete_archive/${id}`, {
       method: 'DELETE',
     })
       .then(response => {
@@ -66,7 +69,7 @@ const ArchiveInterface = () => {
           </TouchableOpacity>
           <Text style={commonStyles.text}>Archive</Text>
           <TouchableOpacity style={voiceAssistantStyles.navIcon}>
-            <Icon type="archive" fill="#FFF" />
+            <Text> </Text>
           </TouchableOpacity>
         </View>
 

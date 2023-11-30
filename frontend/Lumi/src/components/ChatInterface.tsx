@@ -161,6 +161,16 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
         ))}
       </ScrollView>
 
+      {inputVisible ? (
+        <View>
+          <Text> </Text>
+        </View>
+      ) : (
+        <View style={voiceAssistantStyles.voiceInputSpacing}>
+          <Text> </Text>
+        </View>
+      )}
+
       {/* Footer */}
       <View style={voiceAssistantStyles.footer}>
         {inputVisible ? (

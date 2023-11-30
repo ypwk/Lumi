@@ -22,7 +22,7 @@ const SettingsInterface = () => {
         </TouchableOpacity>
         <Text style={commonStyles.text}>Settings</Text>
         <TouchableOpacity style={voiceAssistantStyles.navIcon}>
-          <Icon type="settings" fill="#FFF" />
+          <Text> </Text>
         </TouchableOpacity>
       </View>
 

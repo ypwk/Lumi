@@ -15,7 +15,11 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function AppNavigator() {
   return (
-    <Stack.Navigator initialRouteName="Chat">
+    <Stack.Navigator
+      initialRouteName="Chat"
+      screenOptions={{
+        headerShown: false,
+      }}>
       <Stack.Screen name="Chat" component={SocketChatInterface} />
       <Stack.Screen name="Settings" component={SettingsInterface} />
       <Stack.Screen name="Archive" component={ArchiveInterface} />

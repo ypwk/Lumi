@@ -110,6 +110,7 @@ export default StyleSheet.create({
     flex: 1,
     width: '100%',
     height: 100,
+    flexDirection: 'column',
   },
   touchableInputChangeBar: {
     flex: 1,
@@ -123,6 +124,15 @@ export default StyleSheet.create({
     alignItems: 'center',
     borderRadius: 20, // To make it circular if that's the desired shape
     backgroundColor: '#353a45', // Adjust color as needed
+  },
+  voiceFooter: {
+    flex: 1,
+    width: '100%',
+    height: 200,
+    flexDirection: 'column',
+  },
+  voiceInputSpacing: {
+    height: 65,
   },
   keyboardIcon: {
     width: 40, // Adjust width as needed
