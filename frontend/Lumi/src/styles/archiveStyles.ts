@@ -13,7 +13,8 @@ export default StyleSheet.create({
     flex: 1,
   },
   text: {
-    fontSize: 16,
+    fontSize: 14,
+    color: 'white',
   },
   deleteButton: {
     backgroundColor: 'red',

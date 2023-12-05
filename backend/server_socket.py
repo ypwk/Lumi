@@ -154,8 +154,15 @@ class CustomSocketLLM(LLM):
         """Construct the context string from the cache."""
         context_parts = []
         for question, answer in cache.items():
-            context_parts.append(f"Question: {question}\nAnswer: {answer}")
+            context_parts.append(f" - Question: {question}\n - Answer: {answer}")
         return "\n".join(context_parts)
+
+    def build_list_context(self):
+        """Construct the context string from the cache."""
+        context_parts = []
+        for question, answer in cache.items():
+            context_parts.append(f" - Question: {question}\n - Answer: {answer}")
+        return context_parts
 
     def clear_session_flag(self):
         """Clears the session saved flag."""
@@ -164,11 +171,11 @@ class CustomSocketLLM(LLM):
 
 llm_tokenizer.pad_token_id = llm_model.config.eos_token_id
 
-template = """You are a friendly virtual assistant named Lumi helping a user. 
-Here is some context you may draw from that may be useful:
+template = """You are a friendly virtual assistant named Lumi.
+Here is some context that may or may not be helpful and relevant. 
 {context}
 Here is the user's question: {question}
-Your answer: Let's think carefully."""
+Your answer: Let's be concise and think carefully."""
 prompt = PromptTemplate.from_template(template)
 llm = CustomLLM()
 chain = prompt | llm
@@ -280,10 +287,12 @@ def handle_connect():
 def handle_disconnect():
     print("Socket disconnected, checking save status...")
     if not socket_llm.session_saved:
-        context_string = socket_llm.build_context()
+        context_string = socket_llm.build_list_context()
         if context_string:
             print("Saving {}".format(context_string))
-            store.add_documents([Document(page_content=context_string)])
+            store.add_documents(
+                [Document(page_content=context) for context in context_string]
+            )
             socket_llm.session_saved = True  # Update the flag
             socket_llm.clear_cache()
         else:

@@ -9,6 +9,7 @@ import {BigVoiceButton} from './BigVoiceButton';
 import Icon from './Icon';
 import {ParamListBase, useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import TextToSpeech from '../api/TextToSpeech';
 
 export interface Message {
   user: string;
@@ -19,12 +20,14 @@ interface ChatInterfaceProps {
   messages: Message[];
   setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
   sendMessage: (message: string) => void;
+  tts: TextToSpeech;
 }
 
 export const ChatInterface: React.FC<ChatInterfaceProps> = ({
   messages,
   setMessages,
   sendMessage,
+  tts,
 }) => {
   const [inputText, setInputText] = useState(''); // Add a state to hold input text
   const [isListening, setIsListening] = useState(false);
@@ -65,19 +68,18 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
   }, [voiceText, setMessages, sendMessage]);
 
   // Initialize voice recognition
-  Voice.onSpeechStart = () => {
-    console.log('speech start');
-  };
+  // Voice.onSpeechStart = () => {
+  //   console.log('speech start');
+  // };
   Voice.onSpeechEnd = () => {
     setIsListening(false);
   };
   Voice.onSpeechResults = (e: SpeechResultsEvent) => {
-    console.log(e);
-    setVoiceText(e?.value?.[0] || '');
+    setVoiceText(chooseVoiceText(e?.value?.[0] || ''));
   };
 
   const startListening = async () => {
-    console.log('start listening');
+    tts.stopSpeech();
     if (Voice) {
       try {
         await Voice.start('en-US');
@@ -100,6 +102,8 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
 
   const chooseVoiceText = (text: string | Array<string>) => {
     if (Array.isArray(text)) {
+      text = text.map(str => str.replace('Louie', 'Lumi'));
+      console.log(text);
       let found = text.find(str => str.includes('Lumi'));
       return found || text[0]; // Return the found string or the first one if not found
     }

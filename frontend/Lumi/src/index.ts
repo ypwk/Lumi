@@ -1,5 +1,6 @@
 // API
 export {default as SocketChatInterface} from './api/SocketChatInterface';
+export {default as TextToSpeech} from './api/TextToSpeech';
 
 // Components
 export {default as ResponseDisplay} from './components/ResponseDisplay';
@@ -16,7 +17,7 @@ export {default as NavigationStack} from './components/NavigationStack';
 export {default as VoiceAssistantScreen} from './features/assistant/VoiceAssistantScreen';
 export * from './features/assistant/useVoiceRecording';
 
-// Styles (assuming you're exporting styled components or CSS-in-JS objects)
+// Styles
 export {default as commonStyles} from './styles/commonStyles';
 export {default as voiceAssistantStyles} from './styles/voiceAssistantStyles';
 export {default as archiveStyles} from './styles/archiveStyles';

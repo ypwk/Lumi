@@ -18,8 +18,8 @@ interface ArchiveEntry {
   uuid: string;
 }
 
-// const server_address = 'http://10.0.2.2:5000';
-const server_address = 'http://127.0.0.1:5000';
+const server_address = 'http://10.0.2.2:5000';
+// const server_address = 'http://127.0.0.1:5000';
 
 const ArchiveInterface = () => {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();

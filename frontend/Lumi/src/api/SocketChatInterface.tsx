@@ -5,8 +5,12 @@ import {Message} from '../components/ChatInterface';
 import commonStyles from '../styles/commonStyles';
 import {io, Socket} from 'socket.io-client';
 
-// const SOCKET_URL = 'http://10.0.2.2:5000/';
-const SOCKET_URL = 'http://127.0.0.1:5000/';
+import TextToSpeech from '../api/TextToSpeech';
+
+const SOCKET_URL = 'http://10.0.2.2:5000/';
+// const SOCKET_URL = 'http://127.0.0.1:5000/';
+
+const tts = new TextToSpeech();
 
 const SocketChatInterface: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -23,7 +27,11 @@ const SocketChatInterface: React.FC = () => {
     // });
 
     socket.on('message', message => {
+      if (message === '') {
+        return;
+      }
       const cleanedMessage = message.replace(/<\/s>$/, '');
+      tts.receiveText(cleanedMessage);
       setMessages(prevMessages => {
         const updatedMessages = [...prevMessages];
         const lastMessage = updatedMessages[updatedMessages.length - 1];
@@ -73,6 +81,7 @@ const SocketChatInterface: React.FC = () => {
         sendMessage={sendMessage}
         setMessages={setMessages}
         messages={messages}
+        tts={tts}
       />
     </View>
   );
