@@ -187,6 +187,22 @@ app = Flask(__name__)
 socketio = SocketIO(app)
 
 
+def save_data():
+    if not socket_llm.session_saved:
+        context_string = socket_llm.build_list_context()
+        if context_string:
+            print("Saving {}".format(context_string))
+            store.add_documents(
+                [Document(page_content=context) for context in context_string]
+            )
+            socket_llm.session_saved = True  # Update the flag
+            socket_llm.clear_cache()
+        else:
+            print("No context to save.")
+    else:
+        print("Session data already saved.")
+
+
 @app.route("/")
 def hello_world():
     return "This is the base address for Lumi!"
@@ -286,16 +302,4 @@ def handle_connect():
 @socketio.on("disconnect")
 def handle_disconnect():
     print("Socket disconnected, checking save status...")
-    if not socket_llm.session_saved:
-        context_string = socket_llm.build_list_context()
-        if context_string:
-            print("Saving {}".format(context_string))
-            store.add_documents(
-                [Document(page_content=context) for context in context_string]
-            )
-            socket_llm.session_saved = True  # Update the flag
-            socket_llm.clear_cache()
-        else:
-            print("No context to save.")
-    else:
-        print("Session data already saved.")
+    save_data()

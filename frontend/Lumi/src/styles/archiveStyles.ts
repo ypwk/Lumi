@@ -11,10 +11,23 @@ export default StyleSheet.create({
   },
   textContainer: {
     flex: 1,
+    padding: 0,
+    margin: 0,
   },
   text: {
     fontSize: 14,
     color: 'white',
+    padding: 0,
+    margin: 0,
+  },
+  questionText: {
+    fontWeight: 'bold',
+    fontSize: 16,
+    padding: 0,
+    margin: 0,
+  },
+  idText: {
+    fontStyle: 'italic',
   },
   deleteButton: {
     backgroundColor: 'red',

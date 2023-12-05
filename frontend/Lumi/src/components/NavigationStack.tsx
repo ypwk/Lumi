@@ -3,6 +3,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import SocketChatInterface from '../api/SocketChatInterface';
 import ArchiveInterface from './ArchiveInterface';
 import SettingsInterface from './SettingsInterface';
+import TextToSpeech from '../api/TextToSpeech';
 
 type RootStackParamList = {
   Chat: undefined;
@@ -14,14 +15,19 @@ type RootStackParamList = {
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function AppNavigator() {
+  const tts = new TextToSpeech();
   return (
     <Stack.Navigator
       initialRouteName="Chat"
       screenOptions={{
         headerShown: false,
       }}>
-      <Stack.Screen name="Chat" component={SocketChatInterface} />
-      <Stack.Screen name="Settings" component={SettingsInterface} />
+      <Stack.Screen name="Chat">
+        {() => <SocketChatInterface tts={tts} />}
+      </Stack.Screen>
+      <Stack.Screen name="Settings">
+        {() => <SettingsInterface tts={tts} />}
+      </Stack.Screen>
       <Stack.Screen name="Archive" component={ArchiveInterface} />
     </Stack.Navigator>
   );

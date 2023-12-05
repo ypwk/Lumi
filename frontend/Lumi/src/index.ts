@@ -21,3 +21,4 @@ export * from './features/assistant/useVoiceRecording';
 export {default as commonStyles} from './styles/commonStyles';
 export {default as voiceAssistantStyles} from './styles/voiceAssistantStyles';
 export {default as archiveStyles} from './styles/archiveStyles';
+export {default as settingsStyles} from './styles/settingsStyles';

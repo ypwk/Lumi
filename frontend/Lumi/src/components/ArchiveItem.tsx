@@ -25,7 +25,8 @@ const ArchiveItem: React.FC<ArchiveItemProps> = ({item, onDelete}) => {
   // Split the document into Question and Answer
   const splitDocument = (document: string) => {
     const parts = document.split(' - Answer: ');
-    parts[0].replace("' - Question: ", '');
+    parts[0] = parts[0].replace(' - Question: ', '').trim();
+    parts[1] = parts[1].replace('</s>', '');
     return {
       question: parts[0] || '',
       answer: parts[1] || '',
@@ -43,9 +44,13 @@ const ArchiveItem: React.FC<ArchiveItemProps> = ({item, onDelete}) => {
   return (
     <View style={archiveStyles.itemContainer}>
       <View style={archiveStyles.textContainer}>
-        <Text style={[archiveStyles.text]}>{truncateText(question, 50)}</Text>
-        <Text style={[archiveStyles.text]}>{truncateText(answer, 50)}</Text>
-        <Text style={archiveStyles.text}>{item.uuid}</Text>
+        <Text style={[archiveStyles.text, archiveStyles.questionText]}>
+          {truncateText(question, 50)}
+        </Text>
+        <Text style={[archiveStyles.text]}>{truncateText(answer, 200)}</Text>
+        <Text style={[archiveStyles.text, archiveStyles.idText]}>
+          {item.uuid}
+        </Text>
       </View>
       <TouchableOpacity
         onPress={handleDelete}
