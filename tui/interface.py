@@ -4,6 +4,7 @@ from prompt_toolkit.widgets import Box, Button, Label, TextArea, Frame
 from prompt_toolkit.key_binding import KeyBindings
 from prompt_toolkit.styles import Style
 from prompt_toolkit.layout.controls import FormattedTextControl
+from tui.commands import execute_command
 
 # Define the text area for user input and output
 input_area = TextArea(height=3, prompt="Input: ", multiline=False)
@@ -42,7 +43,16 @@ def _(event):
     """Handle Enter key press to accept user input."""
     user_input = input_area.text
     if user_input:
-        output_area.text += f"You said: {user_input}\n"
+        # Treat as a command if it starts with a forward slash
+        parts = user_input.split(" ")
+        command_name = parts[0]
+        command_args = parts[1:]
+        execute_command(
+            command_name,
+            input_area,
+            output_area,
+            *command_args,
+        )
         input_area.buffer.reset()
 
 
@@ -55,6 +65,10 @@ style = Style.from_dict(
         "output-field": "#f8f8f2",
     }
 )
+
+
+# Add example commands to the command dictionary
+
 
 # Create the application
 app = Application(layout=layout, key_bindings=kb, full_screen=True, style=style)

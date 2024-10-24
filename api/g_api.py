@@ -24,7 +24,14 @@ def authenticate_google_services():
             creds.refresh(Request())
         else:
             flow = InstalledAppFlow.from_client_secrets_file("credentials.json", SCOPES)
-            creds = flow.run_local_server(port=0)
+            creds = flow.run_local_server(
+                port=8080,
+                open_browser=True,
+                authorization_prompt_message="Please visit this URL: {url}",
+                success_message="Authentication complete. You may close this tab.",
+                no_browser=False,
+                enable_local_termination=False,
+            )
         # Save the credentials for the next run
         with open("token.pickle", "wb") as token:
             pickle.dump(creds, token)
@@ -63,39 +70,13 @@ def get_calendar_events(calendar_service):
 
     events = events_result.get("items", [])
 
-    if not events:
-        print("No upcoming events found.")
-    else:
-        print("Upcoming events:")
-        for event in events:
-            start = event["start"].get("dateTime", event["start"].get("date"))
-            print(f"{start} - {event['summary']}")
-
     return events
 
 
 def get_tasks(tasks_service):
     # Get all the task lists available in your account
     tasklists_result = tasks_service.tasklists().list().execute()
-    tasklists = tasklists_result.get("items", [])
-
-    # Display the available task lists
-    if not tasklists:
-        print("No task lists found.")
-    else:
-        print("Task lists:")
-        for tasklist in tasklists:
-            print(f"{tasklist['title']} (ID: {tasklist['id']})")
-            tasks_result = tasks_service.tasks().list(tasklist=tasklist["id"]).execute()
-            tasks = tasks_result.get("items", [])
-            if not tasks:
-                print("No tasks found.")
-            else:
-                print("Tasks:")
-                for task in tasks:
-                    print(f"- {task['title']} (Status: {task['status']})")
-
-    return tasks
+    return tasklists_result.get("items", [])
 
 
 if __name__ == "__main__":
