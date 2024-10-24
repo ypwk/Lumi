@@ -9,3 +9,5 @@ pandas==1.5.3
 
 # Requests - To make HTTP requests, in case you need additional Taskboard API or other integrations
 requests==2.31.0
+
+prompt_toolkit
