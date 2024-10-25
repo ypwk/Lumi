@@ -1,4 +1,6 @@
-from tui.interface import app
+from tui.app import run
+
+import asyncio
 
 if __name__ == "__main__":
-    app.run()
+    asyncio.run(run())

@@ -50,8 +50,9 @@ def get_services():
 
     return tasks_service, calendar_service
 
+tasks_service, calendar_service = get_services()
 
-def get_calendar_events(calendar_service):
+def get_calendar_events():
     # Get the current time in ISO format
     now = datetime.datetime.utcnow().isoformat() + "Z"  # 'Z' indicates UTC time
 
@@ -73,18 +74,17 @@ def get_calendar_events(calendar_service):
     return events
 
 
-def get_tasks(tasks_service):
+def get_upcoming_events():
+    now = datetime.datetime.utcnow().isoformat() + "Z"  # 'Z' indicates UTC time
+    events = calendar_service.events().list(
+        orderBy='startTime',
+        timeMin=now,
+        singleEvents=True,
+        calendarId='primary'
+    ).execute()
+    return events
+
+def get_tasks():
     # Get all the task lists available in your account
     tasklists_result = tasks_service.tasklists().list().execute()
     return tasklists_result.get("items", [])
-
-
-if __name__ == "__main__":
-    # Get both services using the authenticated credentials
-    tasks_service, calendar_service = get_services()
-
-    # Get calendar events
-    events = get_calendar_events(calendar_service)
-
-    # Get tasks
-    tasks = get_tasks(tasks_service)
